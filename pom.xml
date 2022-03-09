@@ -6,7 +6,7 @@
 
     <groupId>com.zdjizhi</groupId>
     <artifactId>radius-account-knowledge</artifactId>
-    <version>210908-security</version>
+    <version>211116-jackson</version>
 
     <name>radius-account-knowledge</name>
     <url>http://www.example.com</url>
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.zdjizhi</groupId>
             <artifactId>galaxy</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-log4j12</artifactId>
@@ -135,14 +135,6 @@
             <version>1.2.70</version>
         </dependency>
 
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.flink/flink-table &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.flink</groupId>-->
-            <!--<artifactId>flink-table</artifactId>-->
-            <!--<version>${flink.version}</version>-->
-            <!--<type>pom</type>-->
-            <!--<scope>${scope.type}</scope>-->
-        <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-core -->
         <dependency>

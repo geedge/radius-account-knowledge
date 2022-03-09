@@ -14,11 +14,11 @@ import java.util.Properties;
  * @Description:
  * @date 2021/6/814:04
  */
-public class Producer {
+public class KafkaProducer {
 
     private static Properties createProducerConfig() {
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", RadiusKnowledgeConfig.OUTPUT_KAFKA_SERVERS);
+        properties.put("bootstrap.servers", RadiusKnowledgeConfig.SINK_KAFKA_SERVERS);
         properties.put("acks", RadiusKnowledgeConfig.PRODUCER_ACK);
         properties.put("retries", RadiusKnowledgeConfig.RETRIES);
         properties.put("linger.ms", RadiusKnowledgeConfig.LINGER_MS);
@@ -28,7 +28,7 @@ public class Producer {
         properties.put("max.request.size", RadiusKnowledgeConfig.MAX_REQUEST_SIZE);
         properties.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, RadiusKnowledgeConfig.PRODUCER_KAFKA_COMPRESSION_TYPE);
 
-        CertUtils.chooseCert(RadiusKnowledgeConfig.KAFKA_SINK_PROTOCOL, properties);
+        CertUtils.chooseCert(RadiusKnowledgeConfig.SINK_KAFKA_SERVERS, properties);
 
         return properties;
     }
@@ -36,7 +36,7 @@ public class Producer {
 
     public static FlinkKafkaProducer<String> getKafkaProducer() {
         FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<String>(
-                RadiusKnowledgeConfig.OUTPUT_KAFKA_TOPIC,
+                RadiusKnowledgeConfig.SINK_KAFKA_TOPIC,
                 new SimpleStringSchema(),
                 createProducerConfig(), Optional.empty());
 

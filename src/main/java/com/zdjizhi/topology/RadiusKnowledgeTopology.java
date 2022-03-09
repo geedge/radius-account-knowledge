@@ -2,12 +2,10 @@ package com.zdjizhi.topology;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.zdjizhi.common.RadiusKnowledgeConfig;
-import com.zdjizhi.utils.functions.FilterLogFunction;
 import com.zdjizhi.utils.functions.FilterNullFunction;
 import com.zdjizhi.utils.functions.MapCompletedFunction;
-import com.zdjizhi.utils.kafka.Consumer;
-import com.zdjizhi.utils.kafka.Producer;
+import com.zdjizhi.utils.kafka.KafkaConsumer;
+import com.zdjizhi.utils.kafka.KafkaProducer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -26,13 +24,12 @@ public class RadiusKnowledgeTopology {
 
 //        environment.enableCheckpointing(5000);
 
-        DataStreamSource<String> streamSource = environment.addSource(Consumer.getKafkaConsumer());
+        DataStreamSource<String> streamSource = environment.addSource(KafkaConsumer.getKafkaConsumer());
 
-        DataStream<String> result = streamSource.filter(new FilterLogFunction()).name("FilterOriginalData")
-                .map(new MapCompletedFunction()).name("RadiusOnOffMap")
+        DataStream<String> result = streamSource.map(new MapCompletedFunction()).name("RadiusOnOffMap")
                 .filter(new FilterNullFunction()).name("FilterAbnormalData");
 
-        result.addSink(Producer.getKafkaProducer()).name("LogSink");
+        result.addSink(KafkaProducer.getKafkaProducer()).name("LogSink");
 
         try {
             environment.execute("RADIUS-ON-OFF");

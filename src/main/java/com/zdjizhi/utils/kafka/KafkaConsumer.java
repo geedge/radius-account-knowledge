@@ -13,25 +13,27 @@ import java.util.Properties;
  * @Description:
  * @date 2021/6/813:54
  */
-public class Consumer {
+public class KafkaConsumer {
     private static Properties createConsumerConfig() {
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", RadiusKnowledgeConfig.INPUT_KAFKA_SERVERS);
+        properties.put("bootstrap.servers", RadiusKnowledgeConfig.SOURCE_KAFKA_SERVERS);
         properties.put("group.id", RadiusKnowledgeConfig.GROUP_ID);
-        properties.put("session.timeout.ms", "60000");
-        properties.put("max.poll.records", 3000);
-        properties.put("max.partition.fetch.bytes", 31457280);
+        properties.put("session.timeout.ms", RadiusKnowledgeConfig.SESSION_TIMEOUT_MS);
+        properties.put("max.poll.records", RadiusKnowledgeConfig.MAX_POLL_RECORDS);
+        properties.put("max.partition.fetch.bytes", RadiusKnowledgeConfig.MAX_PARTITION_FETCH_BYTES);
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
-        CertUtils.chooseCert(RadiusKnowledgeConfig.KAFKA_SOURCE_PROTOCOL,properties);
+        CertUtils.chooseCert(RadiusKnowledgeConfig.SOURCE_KAFKA_SERVERS, properties);
 
         return properties;
     }
 
     public static FlinkKafkaConsumer<String> getKafkaConsumer() {
-        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(RadiusKnowledgeConfig.INPUT_KAFKA_TOPIC,
-                new SimpleStringSchema(), createConsumerConfig());
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                RadiusKnowledgeConfig.SOURCE_KAFKA_TOPIC,
+                new SimpleStringSchema(),
+                createConsumerConfig());
 
         kafkaConsumer.setCommitOffsetsOnCheckpoints(true);
         kafkaConsumer.setStartFromGroupOffsets();

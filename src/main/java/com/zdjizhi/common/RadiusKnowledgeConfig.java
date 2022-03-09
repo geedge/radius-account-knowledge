@@ -15,6 +15,11 @@ public class RadiusKnowledgeConfig {
      * 1、开始计费
      */
     public static final int START_BILLING = 1;
+
+    /**
+     * 3、过渡计费
+     */
+    public static final int UPDATE_BILLING = 3;
     /**
      * 2、停止计费
      */
@@ -50,11 +55,11 @@ public class RadiusKnowledgeConfig {
     /**
      * kafka
      */
-    public static final String INPUT_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "input.kafka.servers");
-    public static final String OUTPUT_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "output.kafka.servers");
+    public static final String SOURCE_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "source.kafka.servers");
+    public static final String SOURCE_KAFKA_TOPIC = RadiusKnowledgeConfigurations.getStringProperty(0, "source.kafka.topic");
+    public static final String SINK_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "sink.kafka.servers");
+    public static final String SINK_KAFKA_TOPIC = RadiusKnowledgeConfigurations.getStringProperty(0, "sink.kafka.topic");
     public static final String GROUP_ID = RadiusKnowledgeConfigurations.getStringProperty(0, "group.id");
-    public static final String OUTPUT_KAFKA_TOPIC = RadiusKnowledgeConfigurations.getStringProperty(0, "output.kafka.topic");
-    public static final String INPUT_KAFKA_TOPIC = RadiusKnowledgeConfigurations.getStringProperty(0, "input.kafka.topic");
     public static final String PRODUCER_ACK = RadiusKnowledgeConfigurations.getStringProperty(0, "producer.ack");
     public static final String PRODUCER_KAFKA_COMPRESSION_TYPE = RadiusKnowledgeConfigurations.getStringProperty(0, "producer.kafka.compression.type");
 
@@ -72,5 +77,12 @@ public class RadiusKnowledgeConfig {
     public static final String KAFKA_SINK_PROTOCOL = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.sink.protocol");
     public static final String KAFKA_USER = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.user");
     public static final String KAFKA_PIN = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.pin");
+
+    /**
+     * kafka source config
+     */
+    public static final String SESSION_TIMEOUT_MS = RadiusKnowledgeConfigurations.getStringProperty(1, "session.timeout.ms");
+    public static final String MAX_POLL_RECORDS = RadiusKnowledgeConfigurations.getStringProperty(1, "max.poll.records");
+    public static final String MAX_PARTITION_FETCH_BYTES = RadiusKnowledgeConfigurations.getStringProperty(1, "max.partition.fetch.bytes");
 
 }
