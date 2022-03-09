@@ -22,8 +22,6 @@ public class RadiusKnowledgeTopology {
     public static void main(String[] args) {
         final StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
 
-//        environment.enableCheckpointing(5000);
-
         DataStreamSource<String> streamSource = environment.addSource(KafkaConsumer.getKafkaConsumer());
 
         DataStream<String> result = streamSource.map(new MapCompletedFunction()).name("RadiusOnOffMap")
