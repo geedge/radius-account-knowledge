@@ -2,11 +2,19 @@ package com.zdjizhi.common;
 
 
 import com.zdjizhi.utils.system.RadiusKnowledgeConfigurations;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 /**
  * @author Administrator
  */
 public class RadiusKnowledgeConfig {
+
+    private static StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+
+    static {
+        encryptor.setPassword("galaxy");
+    }
+
     /**
      * 4- Accounting-Request(账户授权)
      */
@@ -49,10 +57,6 @@ public class RadiusKnowledgeConfig {
 
 
     /**
-     * System
-     */
-
-    /**
      * kafka
      */
     public static final String SOURCE_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "source.kafka.servers");
@@ -73,10 +77,8 @@ public class RadiusKnowledgeConfig {
     public static final Integer BUFFER_MEMORY = RadiusKnowledgeConfigurations.getIntProperty(1, "buffer.memory");
     public static final Integer MAX_REQUEST_SIZE = RadiusKnowledgeConfigurations.getIntProperty(1, "max.request.size");
     public static final String TOOLS_LIBRARY = RadiusKnowledgeConfigurations.getStringProperty(0, "tools.library");
-    public static final String KAFKA_SOURCE_PROTOCOL = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.source.protocol");
-    public static final String KAFKA_SINK_PROTOCOL = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.sink.protocol");
-    public static final String KAFKA_USER = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.user");
-    public static final String KAFKA_PIN = RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.pin");
+    public static final String KAFKA_SASL_JAAS_USER = encryptor.decrypt(RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.user"));
+    public static final String KAFKA_SASL_JAAS_PIN = encryptor.decrypt(RadiusKnowledgeConfigurations.getStringProperty(1, "kafka.pin"));
 
     /**
      * kafka source config

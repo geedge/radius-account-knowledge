@@ -33,15 +33,15 @@ class CertUtils {
             properties.put("security.protocol", "SASL_PLAINTEXT");
             properties.put("sasl.mechanism", "PLAIN");
             properties.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username="
-                    + RadiusKnowledgeConfig.KAFKA_USER + " password=" + RadiusKnowledgeConfig.KAFKA_PIN + ";");
+                    + RadiusKnowledgeConfig.KAFKA_SASL_JAAS_USER + " password=" + RadiusKnowledgeConfig.KAFKA_SASL_JAAS_PIN + ";");
         } else if (servers.contains(SSL_PORT)) {
             properties.put("security.protocol", "SSL");
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "");
             properties.put("ssl.keystore.location", RadiusKnowledgeConfig.TOOLS_LIBRARY + "keystore.jks");
-            properties.put("ssl.keystore.password", RadiusKnowledgeConfig.KAFKA_PIN);
+            properties.put("ssl.keystore.password", RadiusKnowledgeConfig.KAFKA_SASL_JAAS_PIN);
             properties.put("ssl.truststore.location", RadiusKnowledgeConfig.TOOLS_LIBRARY + "truststore.jks");
-            properties.put("ssl.truststore.password", RadiusKnowledgeConfig.KAFKA_PIN);
-            properties.put("ssl.key.password", RadiusKnowledgeConfig.KAFKA_PIN);
+            properties.put("ssl.truststore.password", RadiusKnowledgeConfig.KAFKA_SASL_JAAS_PIN);
+            properties.put("ssl.key.password", RadiusKnowledgeConfig.KAFKA_SASL_JAAS_PIN);
         }
 
     }
