@@ -19,9 +19,9 @@ public final class RadiusKnowledgeConfigurations {
 
     public static String getStringProperty(Integer type, String key) {
         if (type == 0) {
-            return propService.getProperty(key);
+            return propService.getProperty(key).trim();
         } else if (type == 1) {
-            return propDefault.getProperty(key);
+            return propDefault.getProperty(key).trim();
         } else {
             return null;
         }
@@ -30,9 +30,9 @@ public final class RadiusKnowledgeConfigurations {
 
     public static Integer getIntProperty(Integer type, String key) {
         if (type == 0) {
-            return Integer.parseInt(propService.getProperty(key));
+            return Integer.parseInt(propService.getProperty(key).trim());
         } else if (type == 1) {
-            return Integer.parseInt(propDefault.getProperty(key));
+            return Integer.parseInt(propDefault.getProperty(key).trim());
         } else {
             return null;
         }
@@ -40,9 +40,9 @@ public final class RadiusKnowledgeConfigurations {
 
     public static Long getLongProperty(Integer type, String key) {
         if (type == 0) {
-            return Long.parseLong(propService.getProperty(key));
+            return Long.parseLong(propService.getProperty(key).trim());
         } else if (type == 1) {
-            return Long.parseLong(propDefault.getProperty(key));
+            return Long.parseLong(propDefault.getProperty(key).trim());
         } else {
             return null;
         }

@@ -32,28 +32,12 @@ public class RadiusKnowledgeConfig {
      * 2、停止计费
      */
     public static final int STOP_BILLING = 2;
+
     /**
      * 报文类型
      */
     public static final String RADIUS_PACKET_TYPE = "radius_packet_type";
-    /**
-     * 计费请求报文类型
-     */
-    public static final String RADIUS_ACCT_STATUS_TYPE = "radius_acct_status_type";
-    /**
-     * 发送计费请求报文时间戳
-     */
-    public static final String RADIUS_EVENT_TIMESTAMP = "radius_event_timestamp";
 
-    /**
-     * 一个用户多个计费ID关联属性
-     */
-    public static final String RADIUS_MULTI_SESSION_ID = "radius_acct_multi_session_id";
-
-    /**
-     * 用户的在线时长，以秒为单位
-     */
-    public static final String RADIUS_SESSION_TIME = "radius_acct_session_time";
 
 
     /**
@@ -64,8 +48,8 @@ public class RadiusKnowledgeConfig {
     public static final String SINK_KAFKA_SERVERS = RadiusKnowledgeConfigurations.getStringProperty(0, "sink.kafka.servers");
     public static final String SINK_KAFKA_TOPIC = RadiusKnowledgeConfigurations.getStringProperty(0, "sink.kafka.topic");
     public static final String GROUP_ID = RadiusKnowledgeConfigurations.getStringProperty(0, "group.id");
-    public static final String PRODUCER_ACK = RadiusKnowledgeConfigurations.getStringProperty(0, "producer.ack");
-    public static final String PRODUCER_KAFKA_COMPRESSION_TYPE = RadiusKnowledgeConfigurations.getStringProperty(0, "producer.kafka.compression.type");
+    public static final String PRODUCER_ACK = RadiusKnowledgeConfigurations.getStringProperty(1, "producer.ack");
+    public static final String PRODUCER_KAFKA_COMPRESSION_TYPE = RadiusKnowledgeConfigurations.getStringProperty(1, "producer.kafka.compression.type");
 
     /**
      * default config

@@ -2,6 +2,7 @@ package com.zdjizhi.topology;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import com.zdjizhi.common.RadiusKnowledgeConfig;
 import com.zdjizhi.utils.functions.FilterNullFunction;
 import com.zdjizhi.utils.functions.MapCompletedFunction;
 import com.zdjizhi.utils.kafka.KafkaConsumer;
@@ -24,10 +25,10 @@ public class RadiusKnowledgeTopology {
 
         DataStreamSource<String> streamSource = environment.addSource(KafkaConsumer.getKafkaConsumer());
 
-        DataStream<String> result = streamSource.map(new MapCompletedFunction()).name("RadiusOnOffMap")
+        DataStream<String> result = streamSource.map(new MapCompletedFunction()).name(RadiusKnowledgeConfig.SOURCE_KAFKA_TOPIC)
                 .filter(new FilterNullFunction()).name("FilterAbnormalData");
 
-        result.addSink(KafkaProducer.getKafkaProducer()).name("LogSink");
+        result.addSink(KafkaProducer.getKafkaProducer()).name(RadiusKnowledgeConfig.SINK_KAFKA_TOPIC);
 
         try {
             environment.execute("RADIUS-ON-OFF");
@@ -36,6 +37,5 @@ public class RadiusKnowledgeTopology {
         }
 
     }
-
 
 }

@@ -1,8 +1,8 @@
 package com.zdjizhi.utils.functions;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.alibaba.fastjson.JSONObject;
 import com.zdjizhi.common.RadiusKnowledgeConfig;
 import com.zdjizhi.utils.StringUtil;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -21,17 +21,17 @@ public class MapCompletedFunction implements MapFunction<String, String> {
         String result = null;
         try {
             if (StringUtil.isNotBlank(logs)) {
-                JSONObject jsonMap = JSONObject.parseObject(logs);
-                if (jsonMap.containsKey(RadiusKnowledgeConfig.RADIUS_PACKET_TYPE)) {
-                    int packetType = jsonMap.getInteger(RadiusKnowledgeConfig.RADIUS_PACKET_TYPE);
+                JSONObject json = new JSONObject(logs, false, true);
+                if (json.containsKey(RadiusKnowledgeConfig.RADIUS_PACKET_TYPE)) {
+                    int packetType = json.getInt(RadiusKnowledgeConfig.RADIUS_PACKET_TYPE);
                     if (RadiusKnowledgeConfig.ACCOUNTING_REQUEST == packetType) {
-                        result = GetKnowledgeLogs(jsonMap);
+                        result = GetKnowledgeLogs(json);
                     }
 
                 }
             }
         } catch (RuntimeException e) {
-            logger.error("数据解析异常,异常信息:" + e);
+            logger.error("Radius log parsing exception,Message is :" + e);
         }
         return result;
     }
@@ -44,42 +44,36 @@ public class MapCompletedFunction implements MapFunction<String, String> {
      */
     private static String GetKnowledgeLogs(JSONObject jsonMap) {
         JSONObject knowledge = new JSONObject();
+        String framedIp = jsonMap.getStr("radius_framed_ip");
+        String account = jsonMap.getStr("radius_account");
 
-        knowledge.put("framed_ip", jsonMap.getString("radius_framed_ip"));
+        if (StringUtil.isNotBlank(framedIp) && StringUtil.isNotBlank(account)) {
+            knowledge.set("framed_ip", framedIp);
 
-        knowledge.put("account", jsonMap.getString("radius_account"));
+            knowledge.set("account", account);
 
-        knowledge.put("acct_status_type", jsonMap.getString("radius_acct_status_type"));
+            //计费请求报文类型
+            knowledge.set("acct_status_type", jsonMap.getStr("radius_acct_status_type"));
 
-        /*
-        如果存在时间戳则选择此时间戳没有获取当前时间
-        */
-        if (jsonMap.containsKey(RadiusKnowledgeConfig.RADIUS_EVENT_TIMESTAMP)) {
-            knowledge.put("event_timestamp", jsonMap.getString("radius_event_timestamp"));
-        } else {
-            knowledge.put("event_timestamp", (System.currentTimeMillis() / 1000));
+            //如果存在时间戳则选择此时间戳没有获取当前时间
+            knowledge.set("event_timestamp", jsonMap.getLong("radius_event_timestamp", System.currentTimeMillis() / 1000));
+
+            /*
+             * 标识同一个连接：
+             * 1.数据若存在acct_multi_session_id属性，取该属性
+             * 2.不存在取 acct_session_id
+             */
+            if (jsonMap.containsKey("radius_acct_multi_session_id")) {
+                knowledge.set("acct_session_id", jsonMap.getStr("radius_acct_multi_session_id"));
+            } else {
+                knowledge.set("acct_session_id", jsonMap.get("radius_acct_session_id"));
+            }
+
+            //用户的在线时长，以秒为单位,下线用户无此属性，默认为0
+            knowledge.set("acct_session_time", jsonMap.getLong("radius_acct_session_time", 0L));
+
+            return knowledge.toString();
         }
-
-        /*
-         * 标识同一个连接：
-         * 1.数据若存在acct_multi_session_id属性，取该属性
-         * 2.不存在取 acct_session_id
-         */
-        if (jsonMap.containsKey(RadiusKnowledgeConfig.RADIUS_MULTI_SESSION_ID)) {
-            knowledge.put("acct_session_id", jsonMap.getString("radius_acct_multi_session_id"));
-        } else {
-            knowledge.put("acct_session_id", jsonMap.getString("radius_acct_multi_session_id"));
-        }
-
-         /*
-           用户的在线时长，以秒为单位,下线用户无此属性，默认为0
-         */
-        if (jsonMap.containsKey(RadiusKnowledgeConfig.RADIUS_SESSION_TIME)) {
-            knowledge.put("acct_session_time", jsonMap.getString("radius_acct_session_time"));
-        } else {
-            knowledge.put("acct_session_time", 0);
-        }
-
-        return knowledge.toJSONString();
+        return "";
     }
 }
