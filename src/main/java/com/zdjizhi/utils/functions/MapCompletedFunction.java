@@ -66,7 +66,7 @@ public class MapCompletedFunction implements MapFunction<String, String> {
             if (jsonMap.containsKey("radius_acct_multi_session_id")) {
                 knowledge.set("acct_session_id", jsonMap.getStr("radius_acct_multi_session_id"));
             } else {
-                knowledge.set("acct_session_id", jsonMap.get("radius_acct_session_id"));
+                knowledge.set("acct_session_id", jsonMap.getStr("radius_acct_session_id"));
             }
 
             //用户的在线时长，以秒为单位,下线用户无此属性，默认为0
