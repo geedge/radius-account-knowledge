@@ -38,10 +38,12 @@ public class KafkaProducer {
         FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<String>(
                 RadiusKnowledgeConfig.SINK_KAFKA_TOPIC,
                 new SimpleStringSchema(),
-                createProducerConfig(), Optional.empty());
+                createProducerConfig(),
+                //sink与所有分区建立连接，轮询写入；
+                Optional.empty());
 
-        kafkaProducer.setLogFailuresOnly(false);
-//        kafkaProducer.setWriteTimestampToKafka(true);
+        //允许producer记录失败日志而不是捕获和抛出它们
+        kafkaProducer.setLogFailuresOnly(true);
 
         return kafkaProducer;
     }

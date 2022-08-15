@@ -59,6 +59,7 @@ public class MapCompletedFunction implements MapFunction<String, String> {
         } else {
             knowledge.put("event_timestamp", (System.currentTimeMillis() / 1000));
         }
+
         /*
          * 标识同一个连接：
          * 1.数据若存在acct_multi_session_id属性，取该属性
@@ -69,6 +70,7 @@ public class MapCompletedFunction implements MapFunction<String, String> {
         } else {
             knowledge.put("acct_session_id", jsonMap.getString("radius_acct_multi_session_id"));
         }
+
          /*
            用户的在线时长，以秒为单位,下线用户无此属性，默认为0
          */
