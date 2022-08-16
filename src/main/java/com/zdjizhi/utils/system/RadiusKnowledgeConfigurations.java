@@ -1,5 +1,7 @@
 package com.zdjizhi.utils.system;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.zdjizhi.utils.StringUtil;
 
 import java.io.IOException;
@@ -12,6 +14,8 @@ import java.util.Properties;
  */
 
 public final class RadiusKnowledgeConfigurations {
+    private static final Log logger = LogFactory.get();
+
 
     private static Properties propDefault = new Properties();
     private static Properties propService = new Properties();
@@ -65,6 +69,7 @@ public final class RadiusKnowledgeConfigurations {
         } catch (IOException | RuntimeException e) {
             propDefault = null;
             propService = null;
+            logger.error("Failed to obtain configuration file information,Detailed info:" + e);
         }
     }
 }

@@ -31,7 +31,7 @@ public class MapCompletedFunction implements MapFunction<String, String> {
                 }
             }
         } catch (RuntimeException e) {
-            logger.error("Radius log parsing exception,Message is :" + e);
+            logger.error("Radius log parsing exception,Detailed info:" + e);
         }
         return result;
     }
@@ -44,6 +44,7 @@ public class MapCompletedFunction implements MapFunction<String, String> {
      */
     private static String GetKnowledgeLogs(JSONObject jsonMap) {
         JSONObject knowledge = new JSONObject();
+
         String framedIp = jsonMap.getStr("radius_framed_ip");
         String account = jsonMap.getStr("radius_account");
 
@@ -51,6 +52,9 @@ public class MapCompletedFunction implements MapFunction<String, String> {
             knowledge.set("framed_ip", framedIp);
 
             knowledge.set("account", account);
+
+            //所属vsys,若不填写默认为1
+            knowledge.set("vsys_id", jsonMap.getInt("common_vsys_id", 1));
 
             //计费请求报文类型
             knowledge.set("acct_status_type", jsonMap.getStr("radius_acct_status_type"));
