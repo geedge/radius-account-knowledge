@@ -16,7 +16,7 @@
         <repository>
             <id>nexus</id>
             <name>Team Nexus Repository</name>
-            <url>http://192.168.40.125:8099/content/groups/public</url>
+            <url>http://192.168.40.153:8099/content/groups/public</url>
         </repository>
 
         <repository>
@@ -40,6 +40,7 @@
         <hbase.version>2.2.3</hbase.version>
         <hutool.version>5.7.17</hutool.version>
         <jsonpath.version>2.4.0</jsonpath.version>
+        <fastjson.version>2.0.32</fastjson.version>
         <scope.type>provided</scope.type>
         <!--<scope.type>compile</scope.type>-->
     </properties>
@@ -118,7 +119,7 @@
         <dependency>
             <groupId>com.zdjizhi</groupId>
             <artifactId>galaxy</artifactId>
-            <version>1.0.8</version>
+            <version>1.1.3</version>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-log4j12</artifactId>
@@ -186,12 +187,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>${jsonpath.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
@@ -209,6 +204,12 @@
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
             <version>1.9.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
 
     </dependencies>
